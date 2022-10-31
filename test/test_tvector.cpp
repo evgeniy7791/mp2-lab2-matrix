@@ -153,12 +153,11 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
-	TDynamicVector<double> v1(2);
-	TDynamicVector<double> v2(2);
-	v2[0] = 1.0;
-	v2[1] = 1.0;
-	v1 = v2 * 2.0;
-	EXPECT_EQ(v1+v2, v2 + 2.0);
+	TDynamicVector<int> v(10);
+	v[0] = 1;
+	TDynamicVector<int> v1(10);
+	v1[0] = 2;
+	ASSERT_NO_THROW(v + v1);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
