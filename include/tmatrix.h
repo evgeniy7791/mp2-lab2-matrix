@@ -120,14 +120,14 @@ public:
           a.pMem[i] += val;
       return a;
   }
-  TDynamicVector operator-(double val)
+  TDynamicVector operator-(T val)
   {
-      TDynamicVector<T> a(sz);
-      for (size_t i = 0; i < sz; i++)
-          a.pMem[i] -= val;
+      TDynamicVector a(sz);
+      for (int i = 0; i < sz; i++)
+          a.pMem[i] = pMem[i] - val;
       return a;
   }
-  TDynamicVector operator*(double val)
+  TDynamicVector operator*(T val)
   {
       TDynamicVector<T> a(sz);
       for (size_t i = 0; i < sz; i++)
