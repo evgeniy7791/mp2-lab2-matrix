@@ -198,6 +198,8 @@ TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
 	TDynamicVector<double> v1(2);
 	TDynamicVector<double> v2(3);
-	ASSERT_ANY_THROW(v1 *v2);
+	v1[0] = 1.0;
+	v2[0] = 2.0;
+	ASSERT_ANY_THROW(v1 * v2);
 }
 

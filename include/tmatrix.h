@@ -154,16 +154,14 @@ public:
          a.pMem[i] =pMem[i] - v.pMem[i];
           return a;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
-  {
-      if (sz != v.sz)
-          throw "Can`t mult vectors with different sizes";
-      else {
-          T result = 0.0;
-          for (size_t i = 0; i < sz; i++)
-              result = result + (pMem[i] * v.pMem[i]);
-          return result;
-      }
+  T operator*(const TDynamicVector& v) // noexcept(noexcept(T()))
+  {   
+        if (sz != v.sz)
+            throw "Can`t mult vectors with different sizes";
+        T result = 0.0;
+        for (size_t i = 0; i < sz; i++)
+            result = result + (pMem[i] * v.pMem[i]);
+        return result;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
