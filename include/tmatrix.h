@@ -49,6 +49,7 @@ public:
       this->pMem = v.pMem;
       v.pMem = nullptr;
       v.sz = 0;
+      
   }
   ~TDynamicVector()
   {
@@ -67,11 +68,13 @@ public:
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
-      sz = v.sz;
-      T* tmp = pMem;
+      delete[] pMem;
       pMem = v.pMem;
-      v.pMem = tmp;
+      sz = v.sz;
+      v.sz = 0;
+      v.pMem = nullptr;
       return *this;
+      
   }
 
   size_t size() const noexcept { return sz; }

@@ -24,6 +24,13 @@ TEST(TDynamicVector, can_create_copied_vector)
   ASSERT_NO_THROW(TDynamicVector<int> v1(v));
 }
 
+TEST(TDynamicVector, can_create_moved_vector)
+{
+	TDynamicVector<int> v(10);
+
+	ASSERT_NO_THROW(TDynamicVector<int> (std::move(v)));
+}
+
 TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 {
 	TDynamicVector<int> v(5);
@@ -31,11 +38,22 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 	EXPECT_EQ(v, c);
 }
 
+TEST(TDynamicVector, moved_vector_is_equal_to_source_one)
+{
+	TDynamicVector<int> v(5);
+	v[3] = 1;
+	TDynamicVector<int> c(v);
+	TDynamicVector<int> m(std::move(v));
+
+	EXPECT_EQ(m, c);
+}
+
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
 	TDynamicVector<int>* v = new TDynamicVector<int>(5);
 	TDynamicVector<int>* v1 = new TDynamicVector<int>(*v);
 	delete v;
+
 	ASSERT_NO_THROW(delete v1);
 }
 
@@ -85,11 +103,30 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 	EXPECT_EQ(v1, v2);
 }
 
+TEST(TDynamicVector, can_move_vectors_of_equal_size)
+{
+	TDynamicVector<int> v1(5);
+	TDynamicVector<int> v2(5);
+	v1[1] = 1;
+	TDynamicVector<int> v3(v1);
+	v2 = std::move(v1);
+
+	EXPECT_EQ(v3, v2);
+}
+
 TEST(TDynamicVector, assign_operator_change_vector_size)
 {
 	TDynamicVector<int> v1(5);
 	TDynamicVector<int> v2(3);
 	v2 = v1;
+	EXPECT_EQ(5, v2.size());
+}
+
+TEST(TDynamicVector, move_operator_change_vector_size)
+{
+	TDynamicVector<int> v1(5);
+	TDynamicVector<int> v2(3);
+	v2 = std::move(v1);
 	EXPECT_EQ(5, v2.size());
 }
 
@@ -100,6 +137,16 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
 	v1[1] = 1;
 	v2 = v1;
 	EXPECT_EQ(v1, v2);
+}
+
+TEST(TDynamicVector, can_move_vectors_of_different_size)
+{
+	TDynamicVector<int> v1(5);
+	v1[1] = 1;
+	TDynamicVector<int> v2(v1);
+	TDynamicVector<int> v3(10);
+	v3 = std::move(v1);
+	EXPECT_EQ(v3, v2);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -153,11 +200,12 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
-	TDynamicVector<int> v(10);
-	v[0] = 1;
-	TDynamicVector<int> v1(10);
-	v1[0] = 2;
-	ASSERT_NO_THROW(v + v1);
+	TDynamicVector<double> v1(2);
+	TDynamicVector<double> v2(2);
+	v2[0] = 1.0;
+	v2[1] = 1.0;
+	v1 = v2 * 2.0;
+	EXPECT_EQ(v1 + v2, v2*3.0);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
